@@ -161,25 +161,9 @@ def read_register(instrument, reg: dict):
     
     # Calculate raw value
     if reg['type'] == 'sint':
-        # Check if sign bit is set
-        if raw_data[0] > 32768:
-            negative = True
-        else:
-            negative = False
-
-        value = 0
-        for shift in range(0, reg['length']):
-            shift_amount = (reg['length'] - shift - 1)*16
-            value = value | (raw_data[shift] << shift_amount)
-
-        if negative:
-            value = value - 32768
-
+        value = int.from_bytes(raw_bytes, signed=True,  byteorder='big')
     elif reg['type'] == 'uint':
-        value = 0
-        for shift in range(0, reg['length']):
-            shift_amount = (reg['length'] - shift - 1)*16
-            value = value | (raw_data[shift] << shift_amount)
+        value = int.from_bytes(raw_bytes, signed=False, byteorder='big')
     elif reg['type'] == 'string':
         string = ''
         for reg in raw_data:
