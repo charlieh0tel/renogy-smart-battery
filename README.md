@@ -1,232 +1,124 @@
 ## Renogy Smart Battery RS485 Data readout
 
-This python script serves as a playground to determine the register mapping for the renogy smart batteries.
-So far I have found two consecutive address regions for which the battery returns values:
-0x1388 - 0x13a9 and
-0x13ab - 0x13bc
-
-I'm still in the process of figuring out which register contains which value.
+This has been updated to match the Renogy Modbus V1.7 specification.
 
 ### Pinout
-Both RJ45 jacks are connected to the same RS485 lines on the PCB, so it does not matter which jack is used to connect to the battery.
-The UP port also has lines for the activation button which is connected to lines 3 and 4 and allows putting the battery into shelf mode.
+
+Both RJ45 jacks are connected to the same RS485 lines on the PCB, so
+it does not matter which jack is used to connect to the battery.  The
+UP port also has lines for the activation button which is connected to
+lines 3 and 4 and allows putting the battery into shelf mode.
 ![pinout](https://github.com/Grmume/renogy-smart-battery/blob/main/UP_Pinout.png)
 
+Note that the Renogy pin numbers in the specification are backwards
+compared to normal RJ45 convention.
+
 ### Commandline options
+
 --device: Which serial device to use for the RS485 communication
+
 --address: Address of the battery (247 by default, but can be changed by other devices)
+
 --scan-addresses: Scan all addresses to determine the address of the battery.
+
 --list-devices: List all available serial devices to use for the --device option
 
 ### Sample output
 
+Battery discharging at 36 A.
 
-Battery Idle
 ```
-Register                 Address   Value               Binary
+Register                      Address   Value               Binary                            
 ----------------------------------------------------------------------------------------------
-cell_count               0x1388    4                   00000000 00000100
-cellvoltage_1            0x1389    3.30 V              00000000 00100001
-cellvoltage_2            0x138a    3.30 V              00000000 00100001
-cellvoltage_3            0x138b    3.30 V              00000000 00100001
-cellvoltage_4            0x138c    3.30 V              00000000 00100001
-unknown_0x138d           0x138d    0                   00000000 00000000
-unknown_0x138e           0x138e    0                   00000000 00000000
-unknown_0x138f           0x138f    0                   00000000 00000000
-unknown_0x1390           0x1390    0                   00000000 00000000
-celltemp_1               0x139a    18.00 °C            00000000 10110100
-celltemp_2               0x139b    18.00 °C            00000000 10110100
-celltemp_3               0x139c    18.00 °C            00000000 10110100
-celltemp_4               0x139d    18.00 °C            00000000 10110100
-unknown_0x1391           0x1391    0                   00000000 00000000
-unknown_0x1392           0x1392    0                   00000000 00000000
-unknown_0x1393           0x1393    0                   00000000 00000000
-unknown_0x1394           0x1394    0                   00000000 00000000
-unknown_0x1395           0x1395    0                   00000000 00000000
-unknown_0x1396           0x1396    0                   00000000 00000000
-unknown_0x1397           0x1397    0                   00000000 00000000
-unknown_0x1398           0x1398    0                   00000000 00000000
-unknown_0x1399           0x1399    3                   00000000 00000011
-unknown_0x139e           0x139e    0                   00000000 00000000
-unknown_0x139f           0x139f    0                   00000000 00000000
-unknown_0x13a0           0x13a0    0                   00000000 00000000
-unknown_0x13a1           0x13a1    0                   00000000 00000000
-unknown_0x13a2           0x13a2    0                   00000000 00000000
-unknown_0x13a3           0x13a3    0                   00000000 00000000
-unknown_0x13a4           0x13a4    0                   00000000 00000000
-unknown_0x13a5           0x13a5    0                   00000000 00000000
-unknown_0x13a6           0x13a6    0                   00000000 00000000
-unknown_0x13a7           0x13a7    0                   00000000 00000000
-unknown_0x13a8           0x13a8    0                   00000000 00000000
-unknown_0x13a9           0x13a9    0                   00000000 00000000
-unknown_0x13ab           0x13ab    0                   00000000 00000000
-unknown_0x13ac           0x13ac    1                   00000000 00000001
-unknown_0x13ad           0x13ad    200                 00000000 11001000
-unknown_0x13ae           0x13ae    0                   00000000 00000000
-unknown_0x13af           0x13af    1                   00000000 00000001
-unknown_0x13b0           0x13b0    180                 00000000 10110100
-unknown_0x13b1           0x13b1    0                   00000000 00000000
-current                  0x13b2    0.00 A              00000000 00000000
-voltage                  0x13b3    13.50 V             00000000 10000111
-remaining_charge         0x13b4    93.00 Ah            00000000 00000001 01101011 01000111
-capacity                 0x13b6    100.00 Ah           00000000 00000001 10000110 10100000
-unknown_0x13b7           0x13b7    34464               10000110 10100000
-unknown_0x13b8           0x13b8    0                   00000000 00000000
-ov_protect               0x13b9    14.80 V             00000000 10010100
-uv_protect               0x13ba    10.00 V             00000000 01100100
-unknown_0x13bb           0x13bb    5000                00010011 10001000
-unknown_0x13bc           0x13bc    55536               11011000 11110000
-unknown_0x13ec           0x13ec    0                   00000000 00000000
-unknown_0x13ed           0x13ed    0                   00000000 00000000
-unknown_0x13ee           0x13ee    0                   00000000 00000000
-heater_level             0x13ef    0.00 %              00000000 00000000
-unknown_0x13f0           0x13f0    0                   00000000 00000000
-unknown_0x13f1           0x13f1    0                   00000000 00000000
-unknown_0x13f2           0x13f2    14                  00000000 00001110
-unknown_0x13f3           0x13f3    0                   00000000 00000000
-unknown_0x13f4           0x13f4    0                   00000000 00000000
-unknown_0x13f5           0x13f5    192                 00000000 11000000
-serial                   0x13f6    PPTAHXXXXXXXXXXX    01010000 01010000 01010100 01000...
-unknown_0x13fe           0x13fe    12337               00110000 00110001
-unknown_0x13ff           0x13ff    12336               00110000 00110000
-unknown_0x1400           0x1400    12337               00110000 00110001
-unknown_0x1401           0x1401    12338               00110000 00110010
-model                    0x1402    RBT100LFP12SH-G1    01010010 01000010 01010100 00110...
-firmware_version         0x140a    0119                00110000 00110001 00110001 00111001
-manufacturer             0x140c    RENOGY              01010010 01000101 01001110 01001...
-unknown_0x1410           0x1410    0                   00000000 00000000
-unknown_0x1411           0x1411    0                   00000000 00000000
-unknown_0x1412           0x1412    0                   00000000 00000000
-unknown_0x1413           0x1413    0                   00000000 00000000
-unknown_0x1414           0x1414    0                   00000000 00000000
-unknown_0x1415           0x1415    0                   00000000 00000000
-cell_ov_protect          0x1450    3.70 V              00000000 00100101
-cell_ov_recover          0x1451    3.50 V              00000000 00100011
-cell_uv_warn             0x1452    3.00 V              00000000 00011110
-cell_uv_protect          0x1453    2.50 V              00000000 00011001
-hightemp_protect         0x1454    55.00 °C            00000010 00100110
-hightemp_warn?           0x1455    50.00 °C            00000001 11110100
-hightemp_hysteresis      0x1456    5.00 K              00000000 00110010
-unknown_0x1457           0x1457    0                   00000000 00000000
-unknown_0x1458           0x1458    12000               00101110 11100000
-unknown_0x1459           0x1459    10000               00100111 00010000
-unknown_0x145a           0x145a    6000                00010111 01110000
-unknown_0x145b           0x145b    148                 00000000 10010100
-unknown_0x145c           0x145c    142                 00000000 10001110
-unknown_0x145d           0x145d    120                 00000000 01111000
-unknown_0x145e           0x145e    100                 00000000 01100100
-unknown_0x145f           0x145f    600                 00000010 01011000
-unknown_0x1460           0x1460    500                 00000001 11110100
-unknown_0x1461           0x1461    65436               11111111 10011100
-unknown_0x1462           0x1462    65286               11111111 00000110
-unknown_0x1463           0x1463    50536               11000101 01101000
-unknown_0x1464           0x1464    52536               11001101 00111000
-unknown_0x1465           0x1465    54536               11010101 00001000
-unknown_0x1466           0x1466    0                   00000000 00000000
-device_address           0x1467    247                 00000000 11110111
-```
-
-Battery Charging (14.8 A)
-```
-Register                 Address   Value               Binary
-----------------------------------------------------------------------------------------------
-cell_count               0x1388    4                   00000000 00000100
-cellvoltage_1            0x1389    3.40 V              00000000 00100010
-cellvoltage_2            0x138a    3.40 V              00000000 00100010
-cellvoltage_3            0x138b    3.40 V              00000000 00100010
-cellvoltage_4            0x138c    3.30 V              00000000 00100001
-unknown_0x138d           0x138d    0                   00000000 00000000
-unknown_0x138e           0x138e    0                   00000000 00000000
-unknown_0x138f           0x138f    0                   00000000 00000000
-unknown_0x1390           0x1390    0                   00000000 00000000
-celltemp_1               0x139a    18.00 °C            00000000 10110100
-celltemp_2               0x139b    18.00 °C            00000000 10110100
-celltemp_3               0x139c    18.00 °C            00000000 10110100
-celltemp_4               0x139d    18.00 °C            00000000 10110100
-unknown_0x1391           0x1391    0                   00000000 00000000
-unknown_0x1392           0x1392    0                   00000000 00000000
-unknown_0x1393           0x1393    0                   00000000 00000000
-unknown_0x1394           0x1394    0                   00000000 00000000
-unknown_0x1395           0x1395    0                   00000000 00000000
-unknown_0x1396           0x1396    0                   00000000 00000000
-unknown_0x1397           0x1397    0                   00000000 00000000
-unknown_0x1398           0x1398    0                   00000000 00000000
-unknown_0x1399           0x1399    3                   00000000 00000011
-unknown_0x139e           0x139e    0                   00000000 00000000
-unknown_0x139f           0x139f    0                   00000000 00000000
-unknown_0x13a0           0x13a0    0                   00000000 00000000
-unknown_0x13a1           0x13a1    0                   00000000 00000000
-unknown_0x13a2           0x13a2    0                   00000000 00000000
-unknown_0x13a3           0x13a3    0                   00000000 00000000
-unknown_0x13a4           0x13a4    0                   00000000 00000000
-unknown_0x13a5           0x13a5    0                   00000000 00000000
-unknown_0x13a6           0x13a6    0                   00000000 00000000
-unknown_0x13a7           0x13a7    0                   00000000 00000000
-unknown_0x13a8           0x13a8    0                   00000000 00000000
-unknown_0x13a9           0x13a9    0                   00000000 00000000
-unknown_0x13ab           0x13ab    0                   00000000 00000000
-unknown_0x13ac           0x13ac    1                   00000000 00000001
-unknown_0x13ad           0x13ad    200                 00000000 11001000
-unknown_0x13ae           0x13ae    0                   00000000 00000000
-unknown_0x13af           0x13af    1                   00000000 00000001
-unknown_0x13b0           0x13b0    180                 00000000 10110100
-unknown_0x13b1           0x13b1    0                   00000000 00000000
-current                  0x13b2    14.82 A             00000101 11001010
-voltage                  0x13b3    13.60 V             00000000 10001000
-remaining_charge         0x13b4    93.00 Ah            00000000 00000001 01101011 01001000
-capacity                 0x13b6    100.00 Ah           00000000 00000001 10000110 10100000
-unknown_0x13b7           0x13b7    34464               10000110 10100000
-unknown_0x13b8           0x13b8    0                   00000000 00000000
-ov_protect               0x13b9    14.80 V             00000000 10010100
-uv_protect               0x13ba    10.00 V             00000000 01100100
-unknown_0x13bb           0x13bb    5000                00010011 10001000
-unknown_0x13bc           0x13bc    55536               11011000 11110000
-unknown_0x13ec           0x13ec    0                   00000000 00000000
-unknown_0x13ed           0x13ed    0                   00000000 00000000
-unknown_0x13ee           0x13ee    0                   00000000 00000000
-heater_level             0x13ef    0.00 %              00000000 00000000
-unknown_0x13f0           0x13f0    0                   00000000 00000000
-unknown_0x13f1           0x13f1    0                   00000000 00000000
-unknown_0x13f2           0x13f2    14                  00000000 00001110
-unknown_0x13f3           0x13f3    0                   00000000 00000000
-unknown_0x13f4           0x13f4    0                   00000000 00000000
-unknown_0x13f5           0x13f5    192                 00000000 11000000
-serial                   0x13f6    PPTAHXXXXXXXXXXX    01010000 01010000 01010100 01000...
-unknown_0x13fe           0x13fe    12337               00110000 00110001
-unknown_0x13ff           0x13ff    12336               00110000 00110000
-unknown_0x1400           0x1400    12337               00110000 00110001
-unknown_0x1401           0x1401    12338               00110000 00110010
-model                    0x1402    RBT100LFP12SH-G1    01010010 01000010 01010100 00110...
-firmware_version         0x140a    0119                00110000 00110001 00110001 00111001
-manufacturer             0x140c    RENOGY              01010010 01000101 01001110 01001...
-unknown_0x1410           0x1410    0                   00000000 00000000
-unknown_0x1411           0x1411    0                   00000000 00000000
-unknown_0x1412           0x1412    0                   00000000 00000000
-unknown_0x1413           0x1413    0                   00000000 00000000
-unknown_0x1414           0x1414    0                   00000000 00000000
-unknown_0x1415           0x1415    0                   00000000 00000000
-cell_ov_protect          0x1450    3.70 V              00000000 00100101
-cell_ov_recover          0x1451    3.50 V              00000000 00100011
-cell_uv_warn             0x1452    3.00 V              00000000 00011110
-cell_uv_protect          0x1453    2.50 V              00000000 00011001
-hightemp_protect         0x1454    55.00 °C            00000010 00100110
-hightemp_warn?           0x1455    50.00 °C            00000001 11110100
-hightemp_hysteresis      0x1456    5.00 K              00000000 00110010
-unknown_0x1457           0x1457    0                   00000000 00000000
-unknown_0x1458           0x1458    12000               00101110 11100000
-unknown_0x1459           0x1459    10000               00100111 00010000
-unknown_0x145a           0x145a    6000                00010111 01110000
-unknown_0x145b           0x145b    148                 00000000 10010100
-unknown_0x145c           0x145c    142                 00000000 10001110
-unknown_0x145d           0x145d    120                 00000000 01111000
-unknown_0x145e           0x145e    100                 00000000 01100100
-unknown_0x145f           0x145f    600                 00000010 01011000
-unknown_0x1460           0x1460    500                 00000001 11110100
-unknown_0x1461           0x1461    65436               11111111 10011100
-unknown_0x1462           0x1462    65286               11111111 00000110
-unknown_0x1463           0x1463    50536               11000101 01101000
-unknown_0x1464           0x1464    52536               11001101 00111000
-unknown_0x1465           0x1465    54536               11010101 00001000
-unknown_0x1466           0x1466    0                   00000000 00000000
-device_address           0x1467    247                 00000000 11110111
+cellvoltage_count             0x1388    15                  00000000 00001111                  
+cellvoltage_1                 0x1389    3.20 V              00000000 00100000                  
+cellvoltage_2                 0x138a    3.20 V              00000000 00100000                  
+cellvoltage_3                 0x138b    3.20 V              00000000 00100000                  
+cellvoltage_4                 0x138c    3.20 V              00000000 00100000                  
+cellvoltage_5                 0x138d    3.20 V              00000000 00100000                  
+cellvoltage_6                 0x138e    3.20 V              00000000 00100000                  
+cellvoltage_7                 0x138f    3.20 V              00000000 00100000                  
+cellvoltage_8                 0x1390    3.20 V              00000000 00100000                  
+cellvoltage_9                 0x1391    3.20 V              00000000 00100000                  
+cellvoltage_10                0x1392    3.20 V              00000000 00100000                  
+cellvoltage_11                0x1393    3.20 V              00000000 00100000                  
+cellvoltage_12                0x1394    3.20 V              00000000 00100000                  
+cellvoltage_13                0x1394    3.20 V              00000000 00100000                  
+cellvoltage_14                0x1396    3.20 V              00000000 00100000                  
+cellvoltage_15                0x1397    3.20 V              00000000 00100000                  
+cellvoltage_16                0x1398    0.00 V              00000000 00000000                  
+celltemp_count                0x1399    15                  00000000 00001111                  
+celltemp_1                    0x139a    22.00 °C            00000000 11011100                  
+celltemp_2                    0x139b    22.00 °C            00000000 11011100                  
+celltemp_3                    0x139c    22.00 °C            00000000 11011100                  
+celltemp_4                    0x139d    22.00 °C            00000000 11011100                  
+celltemp_5                    0x139e    22.00 °C            00000000 11011100                  
+celltemp_6                    0x139f    22.00 °C            00000000 11011100                  
+celltemp_7                    0x13a0    22.00 °C            00000000 11011100                  
+celltemp_8                    0x13a1    22.00 °C            00000000 11011100                  
+celltemp_9                    0x13a2    23.00 °C            00000000 11100110                  
+celltemp_10                   0x13a3    23.00 °C            00000000 11100110                  
+celltemp_11                   0x13a4    23.00 °C            00000000 11100110                  
+celltemp_12                   0x13a5    23.00 °C            00000000 11100110                  
+celltemp_13                   0x13a6    23.00 °C            00000000 11100110                  
+celltemp_14                   0x13a7    23.00 °C            00000000 11100110                  
+celltemp_15                   0x13a8    23.00 °C            00000000 11100110                  
+celltemp_16                   0x13a9    0.00 °C             00000000 00000000                  
+bmstemp                       0x13ab    0.00 °C             00000000 00000000                  
+envtemp_count                 0x13ac    0                   00000000 00000000                  
+envtemp_1                     0x13ad    25.00 °C            00000000 11111010                  
+envtemp_2                     0x13ae    25.00 °C            00000000 11111010                  
+heatertemp_count              0x13af    0                   00000000 00000000                  
+heatertemp_1                  0x13b0    25.00 °C            00000000 11111010                  
+heatertemp_2                  0x13b1    25.00 °C            00000000 11111010                  
+current                       0x13b2    -36.18 A            11110001 11011110                  
+voltage                       0x13b3    48.60 V             00000001 11100110                  
+remaining_capacity            0x13b4    46.68 Ah            00000000 00000000 10110110 01010100
+total_capacity                0x13b6    50.00 Ah            00000000 00000000 11000011 01010000
+cycle_number                  0x13b8    0                   00000000 00000000                  
+charge_voltage_limit          0x13b9    55.50 V             00000010 00101011                  
+discharge_voltage_limit       0x13ba    41.60 V             00000001 10100000                  
+charge_current_limit          0x13bb    55.00 A             00010101 01111100                  
+discharge_current_limit       0x13bc    -55.00 A            11101010 10000100                  
+cell_voltage_alarminfo        0x13ec    0                   00000000 00000000 00000000 00000000
+cell_temp_alarminfo           0x13ee    0                   00000000 00000000 00000000 00000000
+other_alarminfo               0x13f0    0                   00000000 00000000 00000000 00000000
+status1                       0x13f2    14                  00000000 00001110                  
+status2                       0x13f3    512                 00000010 00000000                  
+status3                       0x13f4    0                   00000000 00000000                  
+charging_status               0x13f5    192                 00000000 11000000                  
+serial                        0x13f6    22RBH4A051020000    00110010 00110010 01010010 01000...
+manu_version                  0x13fe    01                  00110000 00110001                  
+mainline_version              0x13ff    0001                00110000 00110000 00110000 00110001
+comms_version                 0x1401    19                  00110001 00111001                  
+model                         0x1402    RBT50LFP48S         01010010 01000010 01010100 00110...
+firmware_version              0x140a    V104                01010110 00110001 00110000 00110100
+manufacturer                  0x140c    RENOGY              01010010 01000101 01001110 01001...
+cell_over_volt_limit          0x1450    3.70 V              00000000 00100101                  
+cell_high_volt_limit          0x1451    3.60 V              00000000 00100100                  
+cell_low_volt_limit           0x1452    3.00 V              00000000 00011110                  
+cell_under_volt_limit         0x1453    2.80 V              00000000 00011100                  
+charge_over_temp_limit        0x1454    55.00 °C            00000010 00100110                  
+charge_high_temp_limit        0x1455    50.00 °C            00000001 11110100                  
+charge_low_temp_limit         0x1456    3.00 °C             00000000 00011110                  
+charge_under_temp_limit       0x1457    0.00 °C             00000000 00000000                  
+charge_over2_limit            0x1458    120.00 A            00101110 11100000                  
+charge_over1_limit            0x1459    55.00 A             00010101 01111100                  
+charge_high_limit             0x145a    51.00 A             00010011 11101100                  
+module_over_volt_limit        0x145b    55.50 V             00000010 00101011                  
+module_high_volt_limit        0x145c    54.00 V             00000010 00011100                  
+module_low_volt_limit         0x145d    45.70 V             00000001 11001001                  
+module_under_volt_limit       0x145e    41.60 V             00000001 10100000                  
+discharge_over_temp_limit     0x145f    60.00 °C            00000010 01011000                  
+discharge_high_temp_limit     0x1460    55.00 °C            00000010 00100110                  
+discharge_low_temp_limit      0x1461    -10.00 °C           11111111 10011100                  
+discharge_under_temp_limit    0x1462    -20.00 °C           11111111 00111000                  
+discharge_over2_limit         0x1463    -120.00 A           11010001 00100000                  
+discharge_over1_limit         0x1464    -55.00 A            11101010 10000100                  
+discharge_high_limit          0x1465    -51.00 A            11101100 00010100                  
+shutdown_command              0x1466    0                   00000000 00000000                  
+device_address                0x1467    48                  00000000 00110000                  
+unique_id                     0x146a    0                   00000000 00000000 00000000 00000000
+charge_power                  0x146c    12850 W             00110010 00110010                  
+discharge_power               0x146d    21058 W             01010010 01000010
 ```
