@@ -129,8 +129,8 @@ REGISTERS = {
     'unique_id':{                'address':0x146a, 'length':2, 'type':'uint',   'scaling':'identical',        'unit': ''},
 
     #
-    'charge_power':{             'address':0x146c, 'length':1, 'type':'uint',   'scaling':'identical',        'unit': 'W'},
-    'discharge_power':{          'address':0x146d, 'length':1, 'type':'uint',   'scaling':'identical',        'unit': 'W'},
+    #'charge_power':{             'address':0x146c, 'length':1, 'type':'uint',   'scaling':'identical',        'unit': 'W'},
+    #'discharge_power':{          'address':0x146d, 'length':1, 'type':'uint',   'scaling':'identical',        'unit': 'W'},
 }
 
 
